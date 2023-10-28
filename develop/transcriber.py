@@ -23,7 +23,5 @@ for image in images:
 	image = cv2.imread(image)
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 	image = cv2.bilateralFilter(image, 3, 10, 10)
-	def threshold(image):
-		img = cv2.threshold(img, 0, 230, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-        return image
-	print(pytesseract.image_to_string(Image.open(image)))
+    
+	print(pytesseract.image_to_string(image))
