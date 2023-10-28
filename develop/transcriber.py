@@ -11,8 +11,7 @@ datafolder = paths[1]
 for root, dirs, files in os.walk(datafolder, topdown = True, onerror = None):
 	for name in files:
 		images.append(os.path.join(root, name))
-
-print(images)
+		
 for image in images:
 	image = cv2.imread(image)
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
