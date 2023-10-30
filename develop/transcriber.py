@@ -1,10 +1,13 @@
 import os
+import re
 import cv2
 import pytesseract
 
-imagepaths = []
-pdfnames = []
 
+imagepaths = []
+pathsshort = []
+pdfnames = []
+# Map1 Script
 path = os.getcwd()
 dir_list = os.listdir(path)
 paths = [path + '/' + sub + '/' for sub in dir_list]
@@ -13,11 +16,16 @@ for root, dirs, files in os.walk(datafolder, topdown = True, onerror = None):
 	for name in files:
 		imagepaths.append(os.path.join(root, name))
 
+pattern = re.compile('(?P<local>\w*\/\d*\.jpg)')
 for i in imagepaths:
-	i = i.replace("/","")
-	i = i.replace(".jpg", "")
-	pdfnames.append(i)
-		
+	h = pattern.search(i)
+	if h:
+		pathsshort.append('%s' % (h.group('local')))
+		for g in pathsshort:
+			g = g.replace("/","")
+			g = g.replace(".jpg", "")
+			pdfnames.append(g)
+# Reduce1 Script
 for image in imagepaths:
 	l = imagepaths.index(image)
 	image = cv2.imread(image)
