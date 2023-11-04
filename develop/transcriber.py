@@ -3,12 +3,12 @@ import re
 import cv2
 import pytesseract
 
-
 imagepaths = []
 pathsshort = []
 pdfnames = []
-# Map1 Script
+
 inputfolder = ''
+pdffolder = ''
 
 path = os.getcwd()
 dir_list = os.listdir(path)
@@ -17,6 +17,8 @@ paths = [sub + '/' for sub in dir_list]
 for path in paths:
 	if re.search("input", path):
 		inputfolder = inputfolder + path
+	elif re.search("transcribed", path):
+		pdffolder = pdffolder + path
 
 for root, dirs, files in os.walk(inputfolder, topdown = True, onerror = None):
 	for name in files:
@@ -33,7 +35,6 @@ for i in imagepaths:
 			pdfnames.append(g)
 
 # Reduce1 Script
-transcribed = ''
 
 for image in imagepaths:
 	l = imagepaths.index(image)
@@ -42,8 +43,5 @@ for image in imagepaths:
 	image = cv2.bilateralFilter(image, 3, 10, 10)
 	# image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)[1]
 	pdf = pytesseract.image_to_pdf_or_hocr(image, extension='pdf')
-	for path in paths:
-		if re.search("transcribed", path):
-			transcribed = transcribed + path
-	with open('./' + pdfnames[l] + '.pdf', 'w+b') as f:
+	with open(pdffolder + pdfnames[l] + '.pdf', 'w+b') as f:
 		f.write(pdf)
