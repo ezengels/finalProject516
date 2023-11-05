@@ -29,10 +29,11 @@ for i in imagepaths:
 	h = pattern.search(i)
 	if h:
 		pathsshort.append('%s' % (h.group('local')))
-		for g in pathsshort:
-			g = g.replace("/","")
-			g = g.replace(".jpg", "")
-			pdfnames.append(g)
+
+for path in pathsshort:
+	path = path.replace('.jpg', '')
+	path = path.replace('/', '')
+	pdfnames.append(path)
 
 # Reduce1 Script
 
