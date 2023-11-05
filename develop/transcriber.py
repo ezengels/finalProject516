@@ -6,14 +6,12 @@ import pytesseract
 imagepaths = []
 pathsshort = []
 pdfnames = []
-
 inputfolder = ''
 pdffolder = ''
 
 path = os.getcwd()
 dir_list = os.listdir(path)
 paths = [sub + '/' for sub in dir_list]
-
 for path in paths:
 	if re.search("input", path):
 		inputfolder = inputfolder + path
@@ -35,6 +33,7 @@ for path in pathsshort:
 	path = path.replace('/', '')
 	pdfnames.append(path)
 
+print(imagepaths)
 # Reduce1 Script
 
 for image in imagepaths:
