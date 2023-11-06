@@ -1,5 +1,8 @@
 import os
 import re
+import pypdf
+from pypdf import PdfMerger
+
 pdffolder = ''
 pdfs = []
 titles = []
@@ -21,4 +24,16 @@ for path in pdfs:
     t = pattern.search(path)
     if t:
         titles.append('%s' % (t.group('title')))
+
 titles = list(set(titles))
+
+for title in titles:
+    group = []
+    for path in pdfs:
+        if re.search(title, path):
+            group.append(path)
+    merger = PdfMerger()
+    for page in group:
+        merger.append(page)
+    merger.write("combined/" + title + ".pdf")
+    merger.close()
