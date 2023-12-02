@@ -1,34 +1,23 @@
-import os
-import re
+#!/bin/python3
+import subprocess
+import sys
 
-imagepaths = []
-pathsshort = []
-pdfnames = []
-inputfolder = ''
-pdffolder = ''
+for line in sys.stdin:
+    path = line.strip()
 
-path = os.getcwd()
-dir_list = os.listdir(path)
-paths = [sub + '/' for sub in dir_list]
-for path in paths:
-	if re.search("input", path):
-		inputfolder = inputfolder + path
-	elif re.search("transcribed", path):
-		pdffolder = pdffolder + path
+    # Print the raw input line to help identify any issues
+    print(f"Raw input line: {path}")
 
-for root, dirs, files in os.walk(inputfolder, topdown = True, onerror = None):
-	for name in files:
-		imagepaths.append(os.path.join(root, name))
+    # Use 'hadoop fs -ls' to list files in the HDFS directory
+    command = "hadoop fs -ls {}".format(path)
+    process = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-pattern = re.compile('(?P<local>\w*\/\d*\.jpg)')
-for i in imagepaths:
-	h = pattern.search(i)
-	if h:
-		pathsshort.append('%s' % (h.group('local')))
+    # Print the 'hadoop fs -ls' output
+    print(f"ls_output: {process}")
 
-for path in pathsshort:
-	path = path.replace('.jpg', '')
-	path = path.replace('/', '')
-	pdfnames.append(path)
+""" # Process the 'hadoop fs -ls' output to extract file names
+    file_names = [line.split()[-1] for line in ls_output.strip().split('n') if line.strip()]
 
-print(imagepaths)
+    # Print the extracted file names
+    for file_name in file_names:
+        print(f"Processing line: {file_name}")"""
